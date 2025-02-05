@@ -5,7 +5,7 @@ public class ItemCBase : MonoBehaviour
 {
     public Animator animator;
     public string compareTag = "Tag";
-    public float delayToDesapear;
+    //public float delayToDesapear;
 
     [Header("Sounds")]
     public AudioSource audioSource;
@@ -18,9 +18,9 @@ public class ItemCBase : MonoBehaviour
     }
     protected virtual void Collect()
     {
-        //OnCollect();
+        OnCollect();
         //animator.SetBool("Desapear", true);
-        Destroy(gameObject, delayToDesapear);
+        //Destroy(gameObject, delayToDesapear);
     }
     protected virtual void OnCollect()
     {

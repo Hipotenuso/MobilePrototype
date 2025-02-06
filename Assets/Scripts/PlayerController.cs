@@ -1,7 +1,5 @@
-using System.Diagnostics;
 using DG.Tweening;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -13,6 +11,10 @@ public class PlayerController : MonoBehaviour
 
     [Header("Text")]
     public TextMeshPro uiTextPowerUp;
+
+    [Header("Animation")]
+    public AnimatorSetup animatorSetup;
+    public AnimatorManager animatorManager;
     
     [Header("PlayerC")]
     public float speed = 1f;
@@ -25,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public float _currentSpeed;
     private Vector3 _startPosition;
     public GameObject coinCollector;
+    private float _baseSpeedToAnimation = 7f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     // Update is called once per frame
@@ -50,6 +53,8 @@ public class PlayerController : MonoBehaviour
         if(collision.transform.tag == tagEnemy)
         {
             if(!invencible) EndGame();
+            MoveBack();
+            animatorManager.Play(AnimatorManager.AnimationType.DEATH);
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -57,6 +62,7 @@ public class PlayerController : MonoBehaviour
         if(other.transform.tag == tagEnd)
         {
             EndGame();
+            animatorManager.Play(AnimatorManager.AnimationType.IDLE);
         }
     }
 
@@ -70,6 +76,11 @@ public class PlayerController : MonoBehaviour
     {
         _canRun = true;
         startScreen.SetActive(false);
+        animatorManager.Play(AnimatorManager.AnimationType.RUN, _currentSpeed / _baseSpeedToAnimation);
+    }
+    public void MoveBack()
+    {
+        transform.DOMoveZ(-1f, .3f).SetRelative();
     }
 
     #region 
